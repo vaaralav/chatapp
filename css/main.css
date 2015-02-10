@@ -1,0 +1,57 @@
+html,
+body,
+textarea,
+input {
+	font: 13px "Trebuchet MS", sans-serif;
+}
+
+#chat {
+	max-width: 300px;
+	position: relative;
+}
+
+#chat-messages,
+#chat textarea,
+#chat-name {
+	border: 1px solid #BBB;
+	width: 100%;
+	padding: 10px;
+}
+
+#chat input,
+#chat textarea {
+	outline: none;
+}
+
+#chat-messages {
+	height: 250px;
+	overflow-y: scroll; 
+}
+
+#chat-name {
+	margin: 0;
+	border-bottom: 0;
+}
+
+#chat textarea {
+	margin: 0;
+	border-top: 0;
+	max-width: 100%;
+}
+
+#submit {
+	background-color: #CCC;
+	border-radius: 10em;
+	position: absolute;
+	right: -20px;
+}
+
+#chat-status {
+	color: #BBB;
+	padding: 3px;
+	max-width: 55%;
+}
+
+.chat-message {
+	margin-bottom: 10px;
+}

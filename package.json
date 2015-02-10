@@ -1,0 +1,21 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "description": "Real time chat app",
+  "main": "program.js",
+  "dependencies": {
+    "lodash": "^3.1.0",
+    "mongodb": "^1.4.23",
+    "socket.io": "^1.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node program.js"
+  },
+  "keywords": [
+    "chat"
+  ],
+  "author": "Ville Vaarala",
+  "license": "MIT"
+}

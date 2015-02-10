@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Chat w/ Node.js</title>
+	<link rel="stylesheet" href="css/main.css">
+	<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js">
+	</script>
+</head>
+<body>
+	<div id="chat">
+	<input type="text" id="chat-name" name="chat-name" placeholder="Enter your name">
+	<div id="chat-messages">
+	</div> <!-- /#chat-messages -->
+	<textarea placeholder="Type your message"></textarea>
+	<input type="submit" name="submit" id="submit" value="Send message">
+	<div id="chat-status">Status: <span>Idle</span></div>
+
+	</div> <!-- /#chat -->
+
+	<script src="node_modules/socket.io/node_modules/socket.io-client/socket.io.js"></script>
+
+
+	<script type="text/javascript">
+		(function() {
+			// For getting DOM elements
+			var getNode = function(s) {
+				return document.querySelector(s);
+			};
+			// Get required nodes
+			var textarea = getNode('#chat textarea');
+			var chatName = getNode('#chat-name');
+			var messages = getNode('#chat-messages');
+			var status = getNode('#chat-status span');
+
+			// Should be "Idle"
+			var statusDefault = status.textContent;
+
+			// Muuttaa statuksen selainikkunassa ja palauttaa oletus
+			// statuksen hetken päästä.
+			var setStatus = function(s) {
+				status.textContent = s;
+
+				// Status palautetaan oletukseen 4 sekunnin kuluttua
+				if(s !== statusDefault) {
+					var delay = setTimeout(function() {
+						setStatus(statusDefault);
+						clearInterval(delay);
+					}, 4000)
+				}
+			};
+
+			// Yhdistetään serveriin
+			try {
+				var socket = io.connect('http://127.0.0.1:8080');
+
+			} catch(e) {
+				// Set status to warn user
+			}
+
+			// Jos tosi -> Yhteys OK!
+			if(socket !== undefined) {
+
+				// Listen for output
+				socket.on('output', function(data) {
+					// Pistetään viestit näkyviin
+					if(data.length) {
+						// Loop through the results and create new
+						// message div
+						for (var i = 0; i < data.length; i++) {
+							var message = document.createElement('div');
+							message.setAttribute('class', 'chat-message');
+							message.textContent = 
+								data[i].name + ": " + data[i].message;
+
+							// Append, eli lisätään #chat-messagesiin
+							// äsken tehty div
+							messages.appendChild(message);
+							messages.insertBefore(
+								message, messages.firstChild
+							);
+						}
+
+
+
+					}
+					
+				});
+
+				// Listen for a status
+				socket.on('status', function(data) {
+					setStatus(
+						(typeof data === 'object') ? data.message : data
+					);
+
+					// Jos lähetys onnistui tyhjennetään viestikenttä
+					if(data.clear === true) {
+						textarea.value = '';
+					}
+				});
+
+				// listen for keydown
+				textarea.addEventListener('keydown', function(event) {
+					var self = this;
+					var name = chatName.value;
+
+					// Pelkkä ENTER ilman SHIFTIÄ lähettää viestin
+					if(event.which === 13 && event.shiftKey === false) {
+						socket.emit('input', {
+							name: name,
+							message: self.value
+						});
+
+						event.preventDefault();
+					}
+
+				});
+
+				$("#submit").click(function() {
+
+					socket.emit('input', {
+						name: chatName.value,
+						message: textarea.value
+					});
+
+				});
+				
+			}
+		})();
+	</script>
+
+
+</body>
+
+</html>
