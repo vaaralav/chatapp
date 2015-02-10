@@ -17,5 +17,6 @@
     "chat"
   ],
   "author": "Ville Vaarala",
-  "license": "MIT"
+  "license": "MIT",
+  "repository":"http://github.com/vaaralav/chatapp"
 }
