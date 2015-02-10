@@ -17,3 +17,5 @@ Run
 <code>npm install</code>
 
 <code>npm start</code>
+
+Open [http://localhost:8000](http://localhost:8000) in your browser and chat!
