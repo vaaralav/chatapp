@@ -34,7 +34,7 @@ exports.start = function() {
 			}
 		});
 	} else {
-		serve404();
+		serve404(res);
 	}
 }).listen(8000);
 }
